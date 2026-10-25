@@ -1,60 +1,19 @@
 {
-  "cards": [
+  "posts": [
     {
       "id": 1,
-      "icon": "⚡",
-      "title": "سرعت و عملکرد",
-      "description": "استفاده از ساختارهای استاندارد CSS برای دستیابی به بالاترین پرفورمنس در لود صفحه."
-    },
-    {
-      "id": 2,
-      "icon": "🎨",
-      "title": "طراحی مدرن",
-      "description": "ترکیب رنگ‌های متناسب، تایپوگرافی چشم‌نواز و افکت‌های هاور نرم و کاربرپسند."
-    },
-    {
-      "id": 3,
-      "icon": "📱",
-      "title": "کاملاً واکنش‌گرا",
-      "description": "سازگاری ۱۰۰٪ با انواع نمایشگرها: دسکتاپ، تبلت و موبایل‌های هوشمند."
+      "title": "json-server",
+      "author": "typicode"
     }
   ],
-  "gallery": [
+  "comments": [
     {
       "id": 1,
-      "image": "https://picsum.photos/600/400?random=1",
-      "alt": "نمونه کار ۱",
-      "title": "پروژه شاخص",
-      "size": "large"
-    },
-    {
-      "id": 2,
-      "image": "https://picsum.photos/400/300?random=2",
-      "alt": "نمونه کار ۲",
-      "title": "رابط کاربری",
-      "size": "normal"
-    },
-    {
-      "id": 3,
-      "image": "https://picsum.photos/400/300?random=3",
-      "alt": "نمونه کار ۳",
-      "title": "توسعه وب",
-      "size": "normal"
-    },
-    {
-      "id": 4,
-      "image": "https://picsum.photos/400/300?random=4",
-      "alt": "نمونه کار ۴",
-      "title": "وب اپلیکیشن",
-      "size": "normal"
-    },
-    {
-      "id": 5,
-      "image": "https://picsum.photos/600/300?random=5",
-      "alt": "نمونه کار ۵",
-      "title": "برندینگ و گرافیک",
-      "size": "wide"
+      "body": "some comment",
+      "postId": 1
     }
   ],
-  "contacts": []
+  "profile": {
+    "name": "typicode"
+  }
 }

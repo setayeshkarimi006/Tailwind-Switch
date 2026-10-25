@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "https://mockrestapi.ir/api/mock/EZRQUa5iQiuY";
 
 // نمایش پیام در صفحه
 function showStatus(message, isError = false) {
@@ -19,39 +19,30 @@ async function loadCards() {
   if (!container) return;
 
   try {
-    const response = await fetch(`${API_URL}/cards`);
+    const response = await fetch(API_URL);
 
     if (!response.ok) {
       throw new Error("دریافت اطلاعات کارت‌ها ناموفق بود.");
     }
 
-    const cards = await response.json();
+    const data = await response.json();
+
+    // فقط اطلاعات کارت‌ها را برمی‌داریم
+    const cards = data.cards;
 
     container.innerHTML = cards
       .map(
         (card) => `
-          <article class="rounded-2xl bg-white p-6 shadow-md transition hover:-translate-y-1 hover:shadow-xl">
-            <div class="mb-4 text-4xl">${card.icon ?? "✨"}</div>
-
-            <h3 class="mb-3 text-xl font-bold">
-              ${card.title}
-            </h3>
-
-            <p class="leading-8 text-gray-600">
-              ${card.description}
-            </p>
-          </article>
-        `,
+      <div>
+        <div>${card.icon}</div>
+        <h3>${card.title}</h3>
+        <p>${card.description}</p>
+      </div>
+    `,
       )
       .join("");
   } catch (error) {
     console.error("خطا در دریافت کارت‌ها:", error);
-
-    container.innerHTML = `
-      <p class="col-span-full text-center text-red-600">
-        دریافت کارت‌ها ناموفق بود. مطمئن شو JSON Server اجرا شده است.
-      </p>
-    `;
   }
 }
 
@@ -62,55 +53,37 @@ async function loadGallery() {
   if (!container) return;
 
   try {
-    const response = await fetch(`${API_URL}/gallery`);
+    const response = await fetch(API_URL);
 
     if (!response.ok) {
       throw new Error("دریافت تصاویر ناموفق بود.");
     }
 
-    const galleryItems = await response.json();
+    const data = await response.json();
+
+    // فقط اطلاعات گالری را برمی‌داریم
+    const galleryItems = data.gallery;
 
     container.innerHTML = galleryItems
-      .map((item) => {
-        const sizeClasses = {
-          large: "md:col-span-2 md:row-span-2",
-          wide: "md:col-span-2",
-          tall: "md:row-span-2",
-          normal: "",
-        };
-
-        const sizeClass = sizeClasses[item.size] ?? "";
-
-        return `
-          <article class="${sizeClass} overflow-hidden rounded-2xl bg-white shadow-md">
-            <img
-              src="${item.image}"
-              alt="${item.alt ?? item.title ?? "تصویر گالری"}"
-              loading="lazy"
-              class="h-full min-h-48 w-full object-cover transition duration-300 hover:scale-105"
-            >
-
-            <div class="p-4">
-              <h3 class="font-bold">
-                ${item.title ?? ""}
-              </h3>
-            </div>
-          </article>
-        `;
-      })
+      .map(
+        (item) => `
+      <div>
+        <img
+          src="${item.image}"
+          alt="${item.alt}"
+          loading="lazy"
+        >
+        <h3>${item.title}</h3>
+      </div>
+    `,
+      )
       .join("");
   } catch (error) {
-    console.error("خطا در دریافت گالری:", error);
-
-    container.innerHTML = `
-      <p class="col-span-full text-center text-red-600">
-        دریافت تصاویر ناموفق بود. مطمئن شو JSON Server اجرا شده است.
-      </p>
-    `;
+    console.error("خطا در دریافت تصاویر:", error);
   }
 }
-
 // ارسال فرم تماس به API
+
 function setupContactForm() {
   const form = document.querySelector("#contactForm");
 
@@ -132,7 +105,7 @@ function setupContactForm() {
     };
 
     try {
-      const response = await fetch(`${API_URL}/contacts`, {
+      const response = await fetch(API_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -141,21 +114,30 @@ function setupContactForm() {
       });
 
       if (!response.ok) {
-        throw new Error("ثبت پیام ناموفق بود.");
+        throw new Error("ارسال فرم ناموفق بود.");
       }
 
-      await response.json();
+      const result = await response.json();
 
-      showStatus("پیام شما با موفقیت ثبت شد.");
+      console.log("پاسخ API:", result);
+
+      const status = document.querySelector("#formStatus");
+
+      if (status) {
+        status.textContent = "فرم با موفقیت ارسال شد.";
+        status.className = "text-green-600";
+      }
 
       form.reset();
     } catch (error) {
       console.error("خطا در ارسال فرم:", error);
 
-      showStatus(
-        "ثبت پیام انجام نشد. بررسی کن JSON Server در حال اجرا باشد.",
-        true,
-      );
+      const status = document.querySelector("#formStatus");
+
+      if (status) {
+        status.textContent = "ارسال فرم ناموفق بود.";
+        status.className = "text-red-600";
+      }
     }
   });
 }
